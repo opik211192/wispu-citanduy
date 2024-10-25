@@ -365,20 +365,6 @@
             });
         }
 
-        function clearRefresh()
-        {
-             $.ajax({
-                url: '{{ route('pengaduan.clear-temp-lampiran.refresh') }}', // Endpoint untuk menghapus lampiran sementara
-                type: 'DELETE',
-                success: function (response) {
-                    console.log("File sementara dihapus:", response);
-                },
-                error: function (xhr, status, error) {
-                    console.error("Gagal menghapus file sementara:", error);
-                }
-            });
-        }
-
 
         $(document).ready(function () {
             $('#identitas').change(function() {
@@ -594,10 +580,6 @@
                     }
                 });
             });
-
-            $(window).on("beforeunload", function() {
-                clearRefresh();
-            });
         });
     </script>
-</html>
+</html>`
