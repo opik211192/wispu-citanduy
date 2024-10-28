@@ -22,7 +22,7 @@ class KategoriSeeder extends Seeder
         ]);
 
         Kategori::create([
-            'nama' => 'Keuangan dan BNM',
+            'nama' => 'Keuangan dan BMN',
         ]);
 
         Kategori::create([
