@@ -44,5 +44,9 @@ class KategoriSeeder extends Seeder
         Kategori::create([
             'nama' => 'Kode Etik/Perilaku Kepegawaian',
         ]);
+
+        Kategori::create([
+            'nama' => 'Lain-lain',
+        ]);
     }
 }
