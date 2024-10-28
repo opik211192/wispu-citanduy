@@ -196,6 +196,16 @@ class PengaduanController extends Controller
     }
 
 
+    //-----------------------------------------ADMIN CONTROLLER-----------------------------------------//
+
+    public function dataPengaduan()
+    {
+        //buatkan data pengaduan berdasarkan order by tanggal sekarang paginasi 10
+        $pengaduans = Pengaduan::orderBy('created_at', 'desc')->paginate(10);
+
+        return view('admin.pengaduan.index', compact('pengaduans'));
+
+    }
     /**
      * Display the specified resource.
      */

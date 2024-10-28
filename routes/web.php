@@ -30,4 +30,9 @@ Route::delete('/upload-clear-refresh', [PengaduanController::class, 'uploadClear
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//route untuk yang sudah login
+Route::middleware(['auth'])->group(function () {
+   Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+   Route::get('/data-laporan', [PengaduanController::class, 'dataPengaduan'])->name('data-pengaduan'); 
+});
