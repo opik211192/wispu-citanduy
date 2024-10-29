@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Pengaduan;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +25,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        //buatkan data pengaduan yang masuk ahri ini saja
+        $pengaduans = Pengaduan::whereDate('created_at', Carbon::today())->get();
+        $totalPengaduanHariIni = $pengaduans->count();
+
+        //total semaua data pengaduan
+        $totalPengaduanSemua = Pengaduan::count();
+
+        return view('home', compact('totalPengaduanHariIni', 'totalPengaduanSemua'));
     }
 }
