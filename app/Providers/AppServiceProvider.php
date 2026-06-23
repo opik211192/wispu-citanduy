@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Pengaduan;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 
@@ -23,6 +24,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Paksa semua URL memakai HTTPS bila APP_URL memakai https
+        // (mencegah error mixed content saat server di belakang proxy/SSL)
+        if (str_starts_with((string) config('app.url'), 'https')) {
+            URL::forceScheme('https');
+        }
+
         // Gunakan style pagination Bootstrap 4 (AdminLTE)
         Paginator::useBootstrapFour();
 
