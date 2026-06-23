@@ -548,7 +548,13 @@
                         checkLampiranTableEmpty();
                     },
                     error: function (xhr, status, error) {
-                        alert("Gagal mengunggah lampiran: " + error);
+                        var msg = "Gagal mengunggah lampiran.";
+                        if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                            msg = Object.values(xhr.responseJSON.errors).flat().join("\n");
+                        } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                            msg = xhr.responseJSON.message;
+                        }
+                        alert(msg);
                     }
                 });
             });
@@ -683,7 +689,14 @@
                         window.location.href = "{{ route('pengaduan.index') }}";
                     },
                     error: function (xhr, status, error) {
-                        alert("Terjadi kesalahan: " + status);
+                        var msg = "Terjadi kesalahan saat mengirim pengaduan.";
+                        if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                            msg = "Periksa kembali isian berikut:\n" +
+                                Object.values(xhr.responseJSON.errors).flat().join("\n");
+                        } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                            msg = xhr.responseJSON.message;
+                        }
+                        alert(msg);
                     }
                 });
             });
