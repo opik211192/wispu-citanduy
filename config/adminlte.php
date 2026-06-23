@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'Login Pengaduan BBWS Citanduy',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -64,11 +64,11 @@ return [
     */
 
     'logo' => '<b>Administrator</b>',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo_img' => 'img/citanduy.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Admin Logo',
+    'logo_img_alt' => 'Logo',
 
     /*
     |--------------------------------------------------------------------------
@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'img/citanduy.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -113,7 +113,7 @@ return [
         'enabled' => true,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'img/citanduy.png',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
@@ -329,8 +329,8 @@ return [
         ['header' => 'Setting'],
         [
             'text' => 'Users',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
+            'route' => 'user.index',
+            'icon' => 'fas fa-fw fa-users-cog',
         ],
         // [
         //     'text' => 'change_password',

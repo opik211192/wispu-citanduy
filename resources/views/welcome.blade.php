@@ -4,9 +4,10 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>
-        Whistleblowing System
+        Pengaduan
         BBWS Citanduy
     </title>
+    <link rel="icon" href="{{ asset('img/citanduy.png') }}" type="image/png">
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
@@ -77,6 +78,7 @@
             padding: 10px 20px;
             transition: background-color 0.3s;
             z-index: 2;
+            width: 200px;
         }
 
         .btn-custom:hover {
@@ -131,6 +133,12 @@
             -webkit-text-fill-color: transparent; /* Teks transparan untuk efek border */
             z-index: -1; /* Pastikan berada di belakang teks asli */
         }
+        .text-pengaduan {
+            color: #FFD700; /* emas */
+            font-weight: bold;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+        }
+
     </style>
 </head>
 
@@ -165,26 +173,24 @@
     </nav>
 
     <div class="content">
-        <h1>
-            Selamat Datang di
-            <br />
-            Whistleblowing System
-            <br />
-            BBWS Citanduy
+       <h1 class="mb-5">
+        Selamat Datang di
+        <br />
+            <span class="text-pengaduan">Pengaduan</span> BBWS Citanduy
         </h1>
-        <p>
-            Disediakan oleh BBWS Citanduy bagi Anda yang ingin melaporkan suatu perbuatan berindikasi pelanggaran
-            yang terjadi di lingkungan BBWS Citanduy.
-        </p>
+       <p class="mb-4">
+        Layanan ini disediakan oleh BBWS Citanduy sebagai sarana bagi masyarakat untuk menyampaikan aduan,
+        laporan, maupun informasi terkait pelayanan dan kegiatan di lingkungan BBWS Citanduy.
+    </p>
         <p>
             <strong>
                 Ayo Lapor!
             </strong>
             Satu laporan anda bermakna untuk perbaikan BBWS Citanduy.
         </p>
-        <a href="{{ route('pengaduan.index') }}" class="btn btn-custom">
+        <a href="{{ route('pengaduan.index') }}" class="btn btn-custom mt-2">
             <i class="fas fa-bullhorn"></i>
-            LAPOR PELANGGARAN
+            LAPOR ADUAN
         </a>
     </div>
 

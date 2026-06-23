@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PengaduanController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,5 +35,18 @@ Auth::routes();
 //route untuk yang sudah login
 Route::middleware(['auth'])->group(function () {
    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-   Route::get('/data-laporan', [PengaduanController::class, 'dataPengaduan'])->name('data-pengaduan'); 
+   Route::get('/notifikasi-laporan', [PengaduanController::class, 'notifikasi'])->name('pengaduan.notifikasi');
+   Route::get('/data-laporan', [PengaduanController::class, 'dataPengaduan'])->name('data-pengaduan');
+   Route::get('/data-laporan/{pengaduan}', [PengaduanController::class, 'show'])->name('pengaduan.show');
+   Route::get('/data-laporan/{pengaduan}/edit', [PengaduanController::class, 'edit'])->name('pengaduan.edit');
+   Route::put('/data-laporan/{pengaduan}', [PengaduanController::class, 'update'])->name('pengaduan.update');
+   Route::delete('/data-laporan/{pengaduan}', [PengaduanController::class, 'destroy'])->name('pengaduan.destroy');
+
+   // Pengelolaan User
+   Route::get('/data-user', [UserController::class, 'index'])->name('user.index');
+   Route::get('/data-user/create', [UserController::class, 'create'])->name('user.create');
+   Route::post('/data-user', [UserController::class, 'store'])->name('user.store');
+   Route::get('/data-user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
+   Route::put('/data-user/{user}', [UserController::class, 'update'])->name('user.update');
+   Route::delete('/data-user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 });

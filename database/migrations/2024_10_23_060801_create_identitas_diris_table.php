@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('alamat_identitas')->nullable();
             $table->string('email_identitas')->nullable();
             $table->string('no_telpon_identitas')->nullable();
+            $table->string('foto_identitas')->nullable();
+            $table->string('foto_ktp')->nullable();
             $table->timestamps();
 
             $table->foreign('pengaduan_id')->references('id')->on('pengaduans')->onDelete('cascade');

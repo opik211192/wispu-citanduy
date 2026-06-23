@@ -20,7 +20,7 @@ class PengaduanController extends Controller
     public function index()
     {
         $kategoris = Kategori::all();
-        return view('pengaduan.index', compact('kategoris'));
+        return view('pengaduan.pengaduan', compact('kategoris'));
     }
 
     /**
@@ -37,32 +37,38 @@ class PengaduanController extends Controller
     public function store(Request $request)
     {
         if ($request->ajax()) {
-        // Validasi data
+            // Validasi data
             $validatedData = $request->validate([
-                    'judul' => 'required|string|max:255',
-                    'uraian' => 'required|string',
-                    'kategori_id' => 'required',
-                    'status' => 'required|string',
-                    'tanggal_kejadian' => 'required|date',
-                    'tempat_kejadian' => 'required|string',
-                    'pihak_terlibat' => 'required|array',
-                    'pihak_terlibat.*.nama' => 'required|string',
-                    'pihak_terlibat.*.jabatan' => 'required|string',  // Pastikan semua data yang diperlukan ada
-                    'pihak_terlibat.*.klasifikasi' => 'required|string',
-                    'pihak_terlibat.*.alamat' => 'required|string',
-                    'pihak_terlibat.*.no_telpon' => 'required|string',
-                    'pihak_terlibat.*.instansi' => 'required|string',
-                    'pihak_terlibat.*.paket_kegiatan' => 'required|string',
-                    'pihak_terlibat.*.peran' => 'required|string',
-                    'lampiran' => 'required|array',
-                    'lampiran.*.file_lampiran' => 'required',
-                    'lampiran.*.keterangan' => 'required|string',
-                    'identitas' => 'nullable|array', // Jadikan identitas opsional
-                    'identitas.nama_identitas' => 'nullable|string|max:255',
-                    'identitas.alamat_identitas' => 'nullable|string|max:255',
-                    'identitas.email_identitas' => 'nullable|email',
-                    'identitas.no_telpon_identitas' => 'nullable|string|max:15', 
-                ]);
+                'judul' => 'required|string|max:255',
+                'uraian' => 'required|string',
+                'kategori_id' => 'required',
+                'status' => 'required|string',
+                'tanggal_kejadian' => 'required|date',
+                'tempat_kejadian' => 'required|string',
+
+                'pihak_terlibat' => 'required|array',
+                'pihak_terlibat.*.nama' => 'required|string',
+                'pihak_terlibat.*.jabatan' => 'required|string',
+                'pihak_terlibat.*.klasifikasi' => 'required|string',
+                'pihak_terlibat.*.alamat' => 'nullable|string',
+                'pihak_terlibat.*.no_telpon' => 'required|string',
+                'pihak_terlibat.*.instansi' => 'required|string',
+                'pihak_terlibat.*.paket_kegiatan' => 'required|string',
+                'pihak_terlibat.*.peran' => 'required|string',
+
+                'lampiran' => 'required|array',
+                'lampiran.*.file_lampiran' => 'required',
+                'lampiran.*.keterangan' => 'required|string',
+
+                'identitas' => 'required|array',
+
+                'identitas.nama_identitas' => 'required|string|max:255',
+                'identitas.email_identitas' => 'required|email|max:255',
+                'identitas.no_telpon_identitas' => 'required|string|max:15',
+
+                'identitas.foto_identitas' => 'required|file|mimes:jpeg,png,jpg,gif,pdf|max:2048',
+                'identitas.foto_ktp' => 'required|file|mimes:jpeg,png,jpg,gif,pdf|max:2048',
+         ]);
 
             // Simpan ke tabel pengaduan
              $pengaduan = Pengaduan::create([
@@ -119,21 +125,31 @@ class PengaduanController extends Controller
 
             //simpan ke tabel identitas
             if (isset($validatedData['identitas'])) {
+                $identitas = $validatedData['identitas'];
+
+                // Simpan file foto identitas & foto KTP ke storage
+                $fotoIdentitasName = time() . '_identitas_' . $identitas['foto_identitas']->getClientOriginalName();
+                $identitas['foto_identitas']->storeAs('public/identitas', $fotoIdentitasName);
+
+                $fotoKtpName = time() . '_ktp_' . $identitas['foto_ktp']->getClientOriginalName();
+                $identitas['foto_ktp']->storeAs('public/identitas', $fotoKtpName);
+
                 IdentitasDiri::create([
                     'pengaduan_id' => $pengaduan->id,
-                    'nama_identitas' => $validatedData['identitas']['nama_identitas'],
-                    'alamat_identitas' => $validatedData['identitas']['alamat_identitas'],
-                    'email_identitas' => $validatedData['identitas']['email_identitas'],
-                    'no_telpon_identitas' => $validatedData['identitas']['no_telpon_identitas'],
+                    'nama_identitas' => $identitas['nama_identitas'],
+                    'email_identitas' => $identitas['email_identitas'],
+                    'no_telpon_identitas' => $identitas['no_telpon_identitas'],
+                    'foto_identitas' => $fotoIdentitasName,
+                    'foto_ktp' => $fotoKtpName,
                 ]);
             }
 
             // Penggunaan model dan metode untuk menyimpan data dapat disesuaikan dengan kebutuhan.
 
             return response()->json([
-                'success' => true, 
+                'success' => true,
                 'message' => 'Laporan berhasil disimpan',
-                'data' => $validatedData
+                'data' => ['pengaduan_id' => $pengaduan->id]
             ], 200);
         }
 
@@ -198,20 +214,63 @@ class PengaduanController extends Controller
 
     //-----------------------------------------ADMIN CONTROLLER-----------------------------------------//
 
-    public function dataPengaduan()
+    public function dataPengaduan(Request $request)
     {
-        //buatkan data pengaduan berdasarkan order by tanggal sekarang paginasi 10
-        $pengaduans = Pengaduan::orderBy('created_at', 'desc')->paginate(10);
+        $search = $request->input('search');
 
-        return view('admin.pengaduan.index', compact('pengaduans'));
+        //buatkan data pengaduan berdasarkan order by tanggal sekarang paginasi 10
+        $pengaduans = Pengaduan::query()
+            ->when($search, function ($query, $search) {
+                $query->where('judul', 'like', "%{$search}%")
+                    ->orWhere('uraian', 'like', "%{$search}%")
+                    ->orWhere('status', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+
+        // Jika request AJAX, kembalikan hanya partial tabel + pagination
+        if ($request->ajax()) {
+            return view('admin.pengaduan._table', compact('pengaduans', 'search'))->render();
+        }
+
+        return view('admin.pengaduan.index', compact('pengaduans', 'search'));
 
     }
+    /**
+     * Data notifikasi laporan baru (belum dibaca) untuk navbar admin.
+     */
+    public function notifikasi()
+    {
+        $unread = Pengaduan::where('is_read', false)
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        $count = Pengaduan::where('is_read', false)->count();
+
+        $dropdown = view('admin.pengaduan._notif_dropdown', compact('unread', 'count'))->render();
+
+        return response()->json([
+            'label' => $count,
+            'label_color' => 'danger',
+            'dropdown' => $dropdown,
+        ]);
+    }
+
     /**
      * Display the specified resource.
      */
     public function show(Pengaduan $pengaduan)
     {
-        //
+        // Tandai laporan sudah dibaca saat dibuka admin
+        if (! $pengaduan->is_read) {
+            $pengaduan->update(['is_read' => true]);
+        }
+
+        $pengaduan->load('kategori', 'uraianPihaks', 'lampirans', 'identitasDiri');
+
+        return view('admin.pengaduan.detail', compact('pengaduan'));
     }
 
     /**
@@ -219,7 +278,9 @@ class PengaduanController extends Controller
      */
     public function edit(Pengaduan $pengaduan)
     {
-        //
+        $kategoris = Kategori::all();
+
+        return view('admin.pengaduan.edit', compact('pengaduan', 'kategoris'));
     }
 
     /**
@@ -227,7 +288,18 @@ class PengaduanController extends Controller
      */
     public function update(Request $request, Pengaduan $pengaduan)
     {
-        //
+        $validatedData = $request->validate([
+            'judul' => 'required|string|max:255',
+            'uraian' => 'required|string',
+            'kategori_id' => 'required|exists:kategoris,id',
+            'status' => 'required|string',
+            'tanggal_kejadian' => 'required|date',
+            'tempat_kejadian' => 'required|string',
+        ]);
+
+        $pengaduan->update($validatedData);
+
+        return redirect()->route('data-pengaduan')->with('success', 'Pengaduan berhasil diperbarui.');
     }
 
     /**
@@ -235,6 +307,25 @@ class PengaduanController extends Controller
      */
     public function destroy(Pengaduan $pengaduan)
     {
-        //
+        // Hapus file lampiran dari storage
+        foreach ($pengaduan->lampirans as $lampiran) {
+            Storage::delete('public/lampiran/' . $lampiran->file_lampiran);
+        }
+
+        // Hapus file foto identitas & foto KTP dari storage
+        $identitas = $pengaduan->identitasDiri;
+        if ($identitas) {
+            if ($identitas->foto_identitas) {
+                Storage::delete('public/identitas/' . $identitas->foto_identitas);
+            }
+            if ($identitas->foto_ktp) {
+                Storage::delete('public/identitas/' . $identitas->foto_ktp);
+            }
+        }
+
+        // Hapus data pengaduan (baris tabel anak terhapus otomatis via cascade)
+        $pengaduan->delete();
+
+        return redirect()->route('data-pengaduan')->with('success', 'Pengaduan berhasil dihapus.');
     }
 }
