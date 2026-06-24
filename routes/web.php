@@ -29,7 +29,8 @@ Route::delete('/upload-clear-refresh', [PengaduanController::class, 'uploadClear
 
 
 
-Auth::routes();
+// Registrasi mandiri dinonaktifkan — akun hanya dibuat oleh admin
+Auth::routes(['register' => false]);
 
 
 //route untuk yang sudah login
