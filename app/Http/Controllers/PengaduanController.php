@@ -46,15 +46,15 @@ class PengaduanController extends Controller
                 'tanggal_kejadian' => 'required|date',
                 'tempat_kejadian' => 'required|string',
 
-                'pihak_terlibat' => 'required|array',
-                'pihak_terlibat.*.nama' => 'required|string',
-                'pihak_terlibat.*.jabatan' => 'required|string',
-                'pihak_terlibat.*.klasifikasi' => 'required|string',
+                'pihak_terlibat' => 'nullable|array',
+                'pihak_terlibat.*.nama' => 'nullable|string',
+                'pihak_terlibat.*.jabatan' => 'nullable|string',
+                'pihak_terlibat.*.klasifikasi' => 'nullable|string',
                 'pihak_terlibat.*.alamat' => 'nullable|string',
-                'pihak_terlibat.*.no_telpon' => 'required|string',
-                'pihak_terlibat.*.instansi' => 'required|string',
-                'pihak_terlibat.*.paket_kegiatan' => 'required|string',
-                'pihak_terlibat.*.peran' => 'required|string',
+                'pihak_terlibat.*.no_telpon' => 'nullable|string',
+                'pihak_terlibat.*.instansi' => 'nullable|string',
+                'pihak_terlibat.*.paket_kegiatan' => 'nullable|string',
+                'pihak_terlibat.*.peran' => 'nullable|string',
 
                 'lampiran' => 'required|array',
                 'lampiran.*.file_lampiran' => 'required',
@@ -80,18 +80,18 @@ class PengaduanController extends Controller
                 'tempat_kejadian' => $validatedData['tempat_kejadian'],
             ]);
 
-            // //simpan ke tabel uraian pihak
-            foreach ($validatedData['pihak_terlibat'] as $pihak) {
+            // //simpan ke tabel uraian pihak (opsional, boleh kosong)
+            foreach ($validatedData['pihak_terlibat'] ?? [] as $pihak) {
                 Uraian_pihak::create([
                     'pengaduan_id' => $pengaduan->id,
-                    'nama' => $pihak['nama'],
-                    'jabatan' => $pihak['jabatan'],
-                    'klasifikasi' => $pihak['klasifikasi'],
-                    'alamat' => $pihak['alamat'],
-                    'no_telpon' => $pihak['no_telpon'],
-                    'instansi' => $pihak['instansi'],
-                    'paket_kegiatan' => $pihak['paket_kegiatan'],
-                    'peran' => $pihak['peran'],
+                    'nama' => $pihak['nama'] ?? '',
+                    'jabatan' => $pihak['jabatan'] ?? '',
+                    'klasifikasi' => $pihak['klasifikasi'] ?? '',
+                    'alamat' => $pihak['alamat'] ?? '',
+                    'no_telpon' => $pihak['no_telpon'] ?? '',
+                    'instansi' => $pihak['instansi'] ?? '',
+                    'paket_kegiatan' => $pihak['paket_kegiatan'] ?? '',
+                    'peran' => $pihak['peran'] ?? '',
                 ]);
             }
 

@@ -176,19 +176,19 @@
                             <div class="mb-3 row">
                                 <label for="nama" class="col-sm-3 col-form-label">Nama</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="nama" name="nama" required />
+                                    <input type="text" class="form-control" id="nama" name="nama" />
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label for="jabatan" class="col-sm-3 col-form-label">Jabatan</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="jabatan" required />
+                                    <input type="text" class="form-control" id="jabatan" />
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label for="klasifikasi" class="col-sm-3 col-form-label ">Klasifikasi</label>
                                 <div class="col-sm-9">
-                                    <select class="form-select" name="klasifikasi" id="klasifikasi" required>
+                                    <select class="form-select" name="klasifikasi" id="klasifikasi">
                                         <option selected value="">Pilih Klasifikasi</option>
                                         <option value="pejabat">Pejabat</option>
                                         <option value="staff">Staff</option>
@@ -207,27 +207,25 @@
                             <div class="mb-3 row">
                                 <label for="no_telpon" class="col-sm-3 col-form-label">No. Telpon</label>
                                 <div class="col-sm-9">
-                                    <input type="number" class="form-control" id="no_telpon" name="no_telpon"
-                                        required />
+                                    <input type="number" class="form-control" id="no_telpon" name="no_telpon" />
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label for="instansi" class="col-sm-3 col-form-label">Instansi</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="instansi" name="instansi" required />
+                                    <input type="text" class="form-control" id="instansi" name="instansi" />
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label for="paket_kegiatan" class="col-sm-3 col-form-label">Paket Kegiatan</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="paket_kegiatan" name="paket_kegiatan"
-                                        required />
+                                    <input type="text" class="form-control" id="paket_kegiatan" name="paket_kegiatan" />
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label for="peran" class="col-sm-3 col-form-label">Peran</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="peran" name="peran" required />
+                                    <input type="text" class="form-control" id="peran" name="peran" />
                                 </div>
                             </div>
                             <div class="mt-5">
@@ -475,12 +473,7 @@
                 var alamat = $("#alamat").val(); 
                 var no_telp = $("#no_telpon").val(); 
                 var peran = $("#peran").val();
-    
-                if (nama === '' || jabatan === '' || klasifikasi === '' || instansi === '' || paket_kegiatan === '') {
-                    alert("Semua kolom harus diisi!");
-                    return;
-                }
-    
+
                 var newRow = `<tr>
                                 <td>${nama}</td>
                                 <td>${jabatan}</td>
@@ -629,21 +622,16 @@
                     var no_telpon = $(this).find("td:eq(6)").text();
                     var peran = $(this).find("td:eq(7)").text();
     
-                    if (nama && jabatan && klasifikasi && instansi && paketKegiatan) {
-                        pihakTerlibat.push({
-                            nama: nama,
-                            jabatan: jabatan,
-                            klasifikasi: klasifikasi,
-                            instansi: instansi,
-                            paket_kegiatan: paketKegiatan,
-                            alamat: alamat,
-                            no_telpon: no_telpon,
-                            peran: peran
-                        });
-                    } else {
-                        alert("Data pihak terlibat tidak lengkap!");
-                        return;
-                    }
+                    pihakTerlibat.push({
+                        nama: nama,
+                        jabatan: jabatan,
+                        klasifikasi: klasifikasi,
+                        instansi: instansi,
+                        paket_kegiatan: paketKegiatan,
+                        alamat: alamat,
+                        no_telpon: no_telpon,
+                        peran: peran
+                    });
                 });
     
                 // Gunakan FormData (multipart) agar file foto bisa ikut terkirim

@@ -49,6 +49,7 @@
                 @endif
         @endswitch
     @endif
+    <link rel="icon" href="{{ asset('img/citanduy.png') }}">
 
     {{-- Extra Configured Plugins Stylesheets --}}
     @include('adminlte::plugins', ['type' => 'css'])
