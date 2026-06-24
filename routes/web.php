@@ -43,10 +43,16 @@ Route::middleware(['auth'])->group(function () {
    Route::delete('/data-laporan/{pengaduan}', [PengaduanController::class, 'destroy'])->name('pengaduan.destroy');
 
    // Pengelolaan User
+   // index/edit/update terbuka untuk semua user yang login (otorisasi diatur di controller:
+   // non-admin hanya boleh data sendiri, admin boleh semua)
    Route::get('/data-user', [UserController::class, 'index'])->name('user.index');
-   Route::get('/data-user/create', [UserController::class, 'create'])->name('user.create');
-   Route::post('/data-user', [UserController::class, 'store'])->name('user.store');
    Route::get('/data-user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
    Route::put('/data-user/{user}', [UserController::class, 'update'])->name('user.update');
-   Route::delete('/data-user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+
+   // create/store/destroy hanya untuk admin
+   Route::middleware('can:manage-users')->group(function () {
+      Route::get('/data-user/create', [UserController::class, 'create'])->name('user.create');
+      Route::post('/data-user', [UserController::class, 'store'])->name('user.store');
+      Route::delete('/data-user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+   });
 });

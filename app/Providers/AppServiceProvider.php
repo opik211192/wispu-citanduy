@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Pengaduan;
+use App\Models\User;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
@@ -29,6 +31,11 @@ class AppServiceProvider extends ServiceProvider
         if (str_starts_with((string) config('app.url'), 'https')) {
             URL::forceScheme('https');
         }
+
+        // Hanya akun admin (username 'admin') yang boleh mengelola user
+        Gate::define('manage-users', function (User $user) {
+            return $user->username === 'admin';
+        });
 
         // Gunakan style pagination Bootstrap 4 (AdminLTE)
         Paginator::useBootstrapFour();

@@ -22,7 +22,11 @@
 
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+        @can('manage-users')
         <a href="{{ route('user.create') }}" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Tambah User</a>
+        @else
+        <span></span>
+        @endcan
         <form action="{{ route('user.index') }}" method="GET" class="form-inline">
             <div class="input-group input-group-sm" style="max-width: 320px;">
                 <input type="text" name="search" class="form-control" placeholder="Cari nama / email..."
@@ -61,6 +65,7 @@
                             <a href="{{ route('user.edit', $user->id) }}" class="btn btn-warning btn-sm" title="Edit">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
+                            @can('manage-users')
                             @if ($user->username !== 'admin')
                             <form action="{{ route('user.destroy', $user->id) }}" method="POST"
                                 style="display: inline-block;"
@@ -76,6 +81,7 @@
                                 <i class="fas fa-lock"></i> Terkunci
                             </button>
                             @endif
+                            @endcan
                         </td>
                     </tr>
                     @empty

@@ -10,6 +10,19 @@ use Illuminate\Validation\Rules\Password;
 class UserController extends Controller
 {
     /**
+     * Pastikan user yang login boleh mengelola data $user.
+     * Admin boleh semua; non-admin hanya boleh datanya sendiri.
+     */
+    private function authorizeUser(User $user): void
+    {
+        abort_unless(
+            auth()->user()->can('manage-users') || auth()->id() === $user->id,
+            403,
+            'Anda hanya dapat mengubah data Anda sendiri.'
+        );
+    }
+
+    /**
      * Tampilkan daftar user.
      */
     public function index(Request $request)
@@ -17,6 +30,10 @@ class UserController extends Controller
         $search = $request->input('search');
 
         $users = User::query()
+            // Non-admin hanya boleh melihat datanya sendiri
+            ->when(! $request->user()->can('manage-users'), function ($query) use ($request) {
+                $query->where('id', $request->user()->id);
+            })
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('username', 'like', "%{$search}%")
@@ -64,6 +81,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorizeUser($user);
+
         return view('admin.user.edit', compact('user'));
     }
 
@@ -72,6 +91,8 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $this->authorizeUser($user);
+
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,' . $user->id,
