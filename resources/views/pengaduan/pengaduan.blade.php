@@ -353,6 +353,17 @@
                         </div>
     
                         <div class="row mb-3">
+                            <label for="no_ktp" class="col-md-3 col-form-label">
+                                <strong>No. KTP</strong>
+                            </label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" id="no_ktp" name="no_ktp"
+                                    placeholder="Masukkan 16 digit No. KTP" inputmode="numeric" maxlength="16" required>
+                                <small class="text-muted">Harus 16 digit angka.</small>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
                             <label for="email_identitas" class="col-md-3 col-form-label">
                                 <strong>Email</strong>
                             </label>
@@ -457,6 +468,11 @@
 
 
         $(document).ready(function () {
+            // No. KTP hanya boleh angka (buang karakter selain angka saat mengetik)
+            $("#no_ktp").on("input", function () {
+                this.value = this.value.replace(/\D/g, "");
+            });
+
             // Fungsi untuk menampilkan modal tambah uraian
             $("#btn-add-uraian").click(function () {
                 $("#modalAddUraian").modal("show");
@@ -601,13 +617,20 @@
 
                 // Validasi identitas pelapor (wajib)
                 var namaIdentitas = $("#nama_identitas").val();
+                var noKtp = $("#no_ktp").val();
                 var emailIdentitas = $("#email_identitas").val();
                 var noTelponIdentitas = $("#no_telpon_identitas").val();
                 var fotoKtp = $("#foto_ktp")[0].files[0];
                 var fotoIdentitas = $("#foto_identitas")[0].files[0];
 
-                if (!namaIdentitas || !emailIdentitas || !noTelponIdentitas || !fotoKtp || !fotoIdentitas) {
-                    alert("Identitas pelapor (nama, email, no. telepon, foto KTP, dan foto pribadi) harus diisi!");
+                if (!namaIdentitas || !noKtp || !emailIdentitas || !noTelponIdentitas || !fotoKtp || !fotoIdentitas) {
+                    alert("Identitas pelapor (nama, no. KTP, email, no. telepon, foto KTP, dan foto pribadi) harus diisi!");
+                    return;
+                }
+
+                // Validasi No. KTP harus 16 digit angka
+                if (!/^\d{16}$/.test(noKtp)) {
+                    alert("No. KTP harus terdiri dari 16 digit angka.");
                     return;
                 }
     
@@ -660,6 +683,7 @@
                 });
 
                 formData.append('identitas[nama_identitas]', namaIdentitas);
+                formData.append('identitas[no_ktp]', noKtp);
                 formData.append('identitas[email_identitas]', emailIdentitas);
                 formData.append('identitas[no_telpon_identitas]', noTelponIdentitas);
                 formData.append('identitas[foto_ktp]', fotoKtp);

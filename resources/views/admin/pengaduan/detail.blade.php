@@ -138,6 +138,10 @@
                 <td>{{ $pengaduan->identitasDiri->nama_identitas }}</td>
             </tr>
             <tr>
+                <th>No. KTP</th>
+                <td>{{ $pengaduan->identitasDiri->no_ktp }}</td>
+            </tr>
+            <tr>
                 <th>Email</th>
                 <td>{{ $pengaduan->identitasDiri->email_identitas }}</td>
             </tr>

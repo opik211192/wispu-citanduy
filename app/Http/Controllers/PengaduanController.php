@@ -63,6 +63,7 @@ class PengaduanController extends Controller
                 'identitas' => 'required|array',
 
                 'identitas.nama_identitas' => 'required|string|max:255',
+                'identitas.no_ktp' => 'required|digits:16',
                 'identitas.email_identitas' => 'required|email|max:255',
                 'identitas.no_telpon_identitas' => 'required|string|max:15',
 
@@ -137,6 +138,7 @@ class PengaduanController extends Controller
                 IdentitasDiri::create([
                     'pengaduan_id' => $pengaduan->id,
                     'nama_identitas' => $identitas['nama_identitas'],
+                    'no_ktp' => $identitas['no_ktp'],
                     'email_identitas' => $identitas['email_identitas'],
                     'no_telpon_identitas' => $identitas['no_telpon_identitas'],
                     'foto_identitas' => $fotoIdentitasName,
