@@ -10,15 +10,15 @@ use Illuminate\Validation\Rules\Password;
 class UserController extends Controller
 {
     /**
-     * Pastikan user yang login boleh mengelola data $user.
-     * Admin boleh semua; non-admin hanya boleh datanya sendiri.
+     * Pastikan user yang login boleh mengakses / mengubah data $user.
+     * Superadmin boleh semua; user lain hanya boleh data dirinya sendiri.
      */
     private function authorizeUser(User $user): void
     {
         abort_unless(
-            auth()->user()->can('manage-users') || auth()->id() === $user->id,
+            auth()->user()->isSuperadmin() || auth()->id() === $user->id,
             403,
-            'Anda hanya dapat mengubah data Anda sendiri.'
+            'Anda tidak memiliki hak untuk mengubah data ini.'
         );
     }
 
@@ -30,8 +30,8 @@ class UserController extends Controller
         $search = $request->input('search');
 
         $users = User::query()
-            // Non-admin hanya boleh melihat datanya sendiri
-            ->when(! $request->user()->can('manage-users'), function ($query) use ($request) {
+            // Non-superadmin hanya melihat data dirinya sendiri
+            ->when(! $request->user()->isSuperadmin(), function ($query) use ($request) {
                 $query->where('id', $request->user()->id);
             })
             ->when($search, function ($query, $search) {
@@ -39,6 +39,7 @@ class UserController extends Controller
                     ->orWhere('username', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
             })
+            ->orderByRaw("FIELD(role, 'superadmin', 'admin') ASC")
             ->orderBy('name', 'asc')
             ->paginate(10)
             ->withQueryString();
@@ -47,30 +48,36 @@ class UserController extends Controller
     }
 
     /**
-     * Tampilkan form tambah user.
+     * Tampilkan form tambah user (hanya superadmin).
      */
     public function create()
     {
+        $this->authorize('manage-users');
+
         return view('admin.user.create');
     }
 
     /**
-     * Simpan user baru.
+     * Simpan user baru (hanya superadmin).
      */
     public function store(Request $request)
     {
+        $this->authorize('manage-users');
+
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'name'     => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username',
-            'email' => 'required|email|max:255|unique:users,email',
+            'email'    => 'required|email|max:255|unique:users,email',
             'password' => ['required', 'confirmed', Password::min(6)],
+            'role'     => 'required|in:superadmin,admin',
         ]);
 
         User::create([
-            'name' => $validatedData['name'],
+            'name'     => $validatedData['name'],
             'username' => $validatedData['username'],
-            'email' => $validatedData['email'],
+            'email'    => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
+            'role'     => $validatedData['role'],
         ]);
 
         return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan.');
@@ -93,19 +100,30 @@ class UserController extends Controller
     {
         $this->authorizeUser($user);
 
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+        $rules = [
+            'name'     => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,' . $user->id,
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'email'    => 'required|email|max:255|unique:users,email,' . $user->id,
             'password' => ['nullable', 'confirmed', Password::min(6)],
-        ]);
+        ];
 
-        $user->name = $validatedData['name'];
+        // Hanya superadmin yang boleh mengubah role
+        if (auth()->user()->isSuperadmin()) {
+            $rules['role'] = 'required|in:superadmin,admin';
+        }
+
+        $validatedData = $request->validate($rules);
+
+        $user->name     = $validatedData['name'];
         $user->username = $validatedData['username'];
-        $user->email = $validatedData['email'];
+        $user->email    = $validatedData['email'];
+
+        if (auth()->user()->isSuperadmin() && isset($validatedData['role'])) {
+            $user->role = $validatedData['role'];
+        }
 
         // Hanya ubah password jika diisi
-        if (!empty($validatedData['password'])) {
+        if (! empty($validatedData['password'])) {
             $user->password = Hash::make($validatedData['password']);
         }
 
@@ -115,13 +133,16 @@ class UserController extends Controller
     }
 
     /**
-     * Hapus user.
+     * Hapus user (hanya superadmin).
      */
     public function destroy(User $user)
     {
-        // Akun admin utama tidak boleh dihapus
-        if ($user->username === 'admin') {
-            return redirect()->route('user.index')->with('error', 'Akun admin tidak dapat dihapus.');
+        $this->authorize('manage-users');
+
+        // Superadmin tidak boleh menghapus dirinya sendiri
+        if ($user->id === auth()->id()) {
+            return redirect()->route('user.index')
+                ->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
         }
 
         $user->delete();

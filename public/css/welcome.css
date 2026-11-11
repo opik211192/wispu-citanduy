@@ -1,0 +1,179 @@
+body {
+            font-family: 'Arial', sans-serif;
+            color: white;
+            background: url('../img/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+
+        /* Overlay Transparan */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+            animation: welcome-latar 1s ease-out both;
+        }
+
+        .navbar {
+            background: transparent;
+            position: relative;
+            z-index: 2;
+            animation: welcome-muncul 600ms ease-out both;
+        }
+
+        .navbar-nav .nav-link {
+            color: #FFD700;
+            font-weight: bold;
+            transition: color 240ms ease, text-shadow 240ms ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #FFA500;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.35);
+        }
+
+        .navbar-nav .nav-item {
+            animation: welcome-muncul 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .navbar-nav .nav-item:nth-child(1) {
+            animation-delay: 140ms;
+        }
+
+        .navbar-nav .nav-item:nth-child(2) {
+            animation-delay: 220ms;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+            padding-top: 8vh;
+            padding-left: 10%;
+            color: white;
+            text-align: left;
+            animation: welcome-muncul 900ms cubic-bezier(0.22, 1, 0.36, 1) 80ms both;
+        }
+
+        .content h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            animation: welcome-muncul 900ms cubic-bezier(0.22, 1, 0.36, 1) 140ms both;
+        }
+
+        .content p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            max-width: 600px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+            animation: welcome-muncul 900ms cubic-bezier(0.22, 1, 0.36, 1) 220ms both;
+        }
+
+        .btn-custom {
+            background-color: #FFD700;
+            color: black;
+            font-weight: bold;
+            border-radius: 50px;
+            padding: 10px 20px;
+            transition: background-color 280ms ease, transform 280ms ease, box-shadow 280ms ease;
+            z-index: 2;
+            width: 200px;
+            animation: welcome-muncul 900ms cubic-bezier(0.22, 1, 0.36, 1) 300ms both;
+        }
+
+        .btn-custom:hover {
+            background-color: #FFA500;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+        }
+
+        @keyframes welcome-muncul {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes welcome-latar {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .overlay,
+            .navbar,
+            .navbar-nav .nav-item,
+            .navbar-nav .nav-link,
+            .content,
+            .content h1,
+            .content p,
+            .btn-custom {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* Footer Styling */
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            font-weight: bold;
+            z-index: 2;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #bbb;
+        }
+
+        .footer span {
+            color: #FFD700;
+        }
+
+       .bbws-citanduy {
+            font-weight: bold; /* Tebalkan teks */
+            font-size: 1rem; /* Sesuaikan ukuran font */
+            text-transform: uppercase; /* Ubah menjadi huruf kapital semua */
+            letter-spacing: 2px; /* Beri jarak antar huruf */
+            color: #FFD700; /* Warna emas */
+            position: relative; /* Untuk posisi border */
+            display: inline-block; /* Membuat border bisa sesuai teks */
+        }
+            
+            /* Menambahkan outline pada teks */
+        .bbws-citanduy:before {
+            content: attr(data-text); /* Menggunakan data-text untuk menambahkan border */
+            position: absolute; /* Posisi absolute agar tidak mempengaruhi layout */
+            top: 0;
+            left: 0;
+            color: transparent; /* Buat teks menjadi transparan */
+            font-weight: bold; /* Tetap tebal */
+            font-size: 1rem; /* Sama dengan ukuran asli */
+            letter-spacing: 2px; /* Jarak antar huruf */
+            background: linear-gradient(90deg, #FFA500, #FFD700); /* Gradien yang kontras */
+            -webkit-background-clip: text; /* Agar gradient hanya pada teks */
+            -webkit-text-fill-color: transparent; /* Teks transparan untuk efek border */
+            z-index: -1; /* Pastikan berada di belakang teks asli */
+        }
+        .text-pengaduan {
+            color: #FFD700; /* emas */
+            font-weight: bold;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+        }

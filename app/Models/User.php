@@ -22,6 +22,7 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -42,4 +43,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /** Cek apakah user adalah superadmin. */
+    public function isSuperadmin(): bool
+    {
+        return $this->role === 'superadmin';
+    }
+
+    /** Cek apakah user adalah admin (termasuk superadmin). */
+    public function isAdmin(): bool
+    {
+        return in_array($this->role, ['superadmin', 'admin']);
+    }
 }

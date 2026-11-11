@@ -13,40 +13,18 @@ class KategoriSeeder extends Seeder
      */
     public function run(): void
     {
-        Kategori::create([
-            'nama' => 'Perencanaan Kegiatan',
-        ]);
-
-        Kategori::create([
-            'nama' => 'Pasca Pelaksanaan',
-        ]);
-
-        Kategori::create([
-            'nama' => 'Keuangan dan BMN',
-        ]);
-
-        Kategori::create([
-            'nama' => 'Tender/Seleksi',
-        ]);
-
-        Kategori::create([
-            'nama' => 'Pelayanan Publik',
-        ]);
-
-        Kategori::create([
-            'nama' => 'Lahan',
-        ]);
-
-        Kategori::create([
-            'nama' => 'Pelaksan Kegiatan',
-        ]);
-
-        Kategori::create([
-            'nama' => 'Kode Etik/Perilaku Kepegawaian',
-        ]);
-
-        Kategori::create([
-            'nama' => 'Lain-lain',
-        ]);
+        foreach ([
+            'Perencanaan Kegiatan',
+            'Pasca Pelaksanaan',
+            'Barang Milik Negara (BMN)',
+            'Tender/Seleksi',
+            'Pelayanan Publik',
+            'Lahan',
+            'Pelaksanaan Kegiatan',
+            'Kode Etik/Perilaku Kepegawaian',
+            'Lain-lain',
+        ] as $nama) {
+            Kategori::firstOrCreate(['nama' => $nama]);
+        }
     }
 }

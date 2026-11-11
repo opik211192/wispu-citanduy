@@ -8,8 +8,14 @@
 
 @section('content')
 <div class="mb-3">
-    <a href="{{ route('data-pengaduan') }}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i> Kembali</a>
-    {{-- <a href="{{ route('pengaduan.edit', $pengaduan->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a> --}}
+    <a href="{{ route('data-pengaduan') }}" class="btn btn-secondary btn-sm">
+        <i class="fas fa-arrow-left"></i> Kembali
+    </a>
+
+    <a href="{{ route('pengaduan.print', $pengaduan->id) }}"
+       class="btn btn-primary btn-sm">
+        <i class="fas fa-print"></i> Print dan Tindak Lanjut
+    </a>
 </div>
 
 {{-- Informasi Pengaduan --}}
@@ -40,6 +46,10 @@
             <tr>
                 <th>Tempat Kejadian</th>
                 <td>{{ $pengaduan->tempat_kejadian }}</td>
+            </tr>
+            <tr>
+                <th>Kode Laporan</th>
+                <td><strong>{{ $pengaduan->kode_laporan }}</strong></td>
             </tr>
             <tr>
                 <th>Tanggal Lapor</th>

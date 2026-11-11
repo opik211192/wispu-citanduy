@@ -1,0 +1,4 @@
+@echo off
+cd /d "C:\Drive D\SynologyDrive\pengaduan"
+C:\xampp\php\php.exe artisan serve --host=0.0.0.0 --port=8000
+pause

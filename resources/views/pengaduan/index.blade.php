@@ -349,8 +349,32 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        function requestWithFreshCsrf(options, alreadyRetried = false) {
+            var requestOptions = Object.assign({}, options);
+            var originalError = options.error;
+
+            requestOptions.error = function (xhr, status, error) {
+                if (xhr.status === 419 && !alreadyRetried) {
+                    $.getJSON('{{ route('csrf-token') }}')
+                        .done(function (response) {
+                            $('meta[name="csrf-token"]').attr('content', response.token);
+                            $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': response.token } });
+                            requestWithFreshCsrf(options, true);
+                        })
+                        .fail(function () {
+                            alert('Sesi formulir telah berakhir. Silakan muat ulang halaman lalu coba unggah kembali.');
+                        });
+                    return;
+                }
+
+                if (typeof originalError === 'function') originalError(xhr, status, error);
+            };
+
+            return $.ajax(requestOptions);
+        }
+
         function clearTempLampiran(fileName) {
-            $.ajax({
+            requestWithFreshCsrf({
                 url: '{{ route('pengaduan.clear-temp-lampiran') }}',
                 type: 'POST',
                 data: {
@@ -440,7 +464,7 @@
     
                 var formData = new FormData(this);
     
-                $.ajax({
+                requestWithFreshCsrf({
                     url: '{{ route('pengaduan.upload-temp-lampiran') }}', // Endpoint sementara untuk upload
                     type: 'POST',
                     data: formData,

@@ -21,15 +21,19 @@
 @endif
 
 <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+    <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
         @can('manage-users')
-        <a href="{{ route('user.create') }}" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Tambah User</a>
+        <a href="{{ route('user.create') }}" class="btn btn-success btn-sm">
+            <i class="fas fa-user-plus"></i> Tambah User
+        </a>
         @else
         <span></span>
         @endcan
+
         <form action="{{ route('user.index') }}" method="GET" class="form-inline">
             <div class="input-group input-group-sm" style="max-width: 320px;">
-                <input type="text" name="search" class="form-control" placeholder="Cari nama / email..."
+                <input type="text" name="search" class="form-control"
+                    placeholder="Cari nama / username / email..."
                     value="{{ $search ?? '' }}">
                 <div class="input-group-append">
                     <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
@@ -40,45 +44,62 @@
             </div>
         </form>
     </div>
-    <div class="card-body">
+
+    <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead>
+            <table class="table table-bordered table-striped mb-0">
+                <thead class="thead-light">
                     <tr>
-                        <th>No</th>
-                        <th>Nama</th>
+                        <th class="text-center" style="width: 50px;">No</th>
+                        <th>Nama Lengkap</th>
                         <th>Username</th>
                         <th>Email</th>
-                        <th>Terdaftar</th>
-                        <th>#</th>
+                        <th class="text-center">Role</th>
+                        <th class="text-center" style="width: 80px;">Terdaftar</th>
+                        <th class="text-center" style="width: 140px;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($users as $user)
                     <tr>
-                        <td>{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
+                        <td class="text-center">{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
                         <td>{{ $user->name }}</td>
-                        <td>{{ $user->username }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->created_at->format('d-m-Y') }}</td>
                         <td>
-                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-warning btn-sm" title="Edit">
-                                <i class="fas fa-edit"></i> Edit
+                            <code>{{ $user->username }}</code>
+                            @if ($user->id === auth()->id())
+                            <span class="badge badge-info ml-1">Anda</span>
+                            @endif
+                        </td>
+                        <td>{{ $user->email }}</td>
+                        <td class="text-center">
+                            @if ($user->role === 'superadmin')
+                                <span class="badge badge-danger">Superadmin</span>
+                            @elseif ($user->role === 'admin')
+                                <span class="badge badge-primary">Admin</span>
+                            @else
+                                <span class="badge badge-secondary">{{ $user->role }}</span>
+                            @endif
+                        </td>
+                        <td class="text-center">{{ $user->created_at->format('d/m/Y') }}</td>
+                        <td class="text-center">
+                            <a href="{{ route('user.edit', $user->id) }}"
+                               class="btn btn-warning btn-sm" title="Edit">
+                                <i class="fas fa-edit"></i>
                             </a>
                             @can('manage-users')
-                            @if ($user->username !== 'admin')
+                            @if ($user->id !== auth()->id())
                             <form action="{{ route('user.destroy', $user->id) }}" method="POST"
                                 style="display: inline-block;"
-                                onsubmit="return confirm('Yakin ingin menghapus user ini?')">
+                                onsubmit="return confirm('Yakin ingin menghapus user {{ $user->name }}?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
-                                    <i class="fas fa-trash"></i> Hapus
+                                    <i class="fas fa-trash"></i>
                                 </button>
                             </form>
                             @else
-                            <button class="btn btn-secondary btn-sm" title="Akun admin tidak dapat dihapus" disabled>
-                                <i class="fas fa-lock"></i> Terkunci
+                            <button class="btn btn-secondary btn-sm" title="Tidak dapat menghapus akun sendiri" disabled>
+                                <i class="fas fa-lock"></i>
                             </button>
                             @endif
                             @endcan
@@ -86,7 +107,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="text-center">
+                        <td colspan="7" class="text-center py-3">
                             @if (!empty($search))
                             Tidak ada user yang cocok dengan pencarian "<strong>{{ $search }}</strong>".
                             @else
@@ -98,13 +119,20 @@
                 </tbody>
             </table>
         </div>
+    </div>
 
-        <div class="d-flex justify-content-between align-items-center flex-wrap mt-2">
-            <small class="text-muted">
-                Menampilkan {{ $users->firstItem() ?? 0 }}–{{ $users->lastItem() ?? 0 }} dari {{ $users->total() }} user
-            </small>
-            {{ $users->links() }}
-        </div>
+    <div class="card-footer d-flex justify-content-between align-items-center flex-wrap">
+        <small class="text-muted">
+            Menampilkan {{ $users->firstItem() ?? 0 }}–{{ $users->lastItem() ?? 0 }}
+            dari {{ $users->total() }} user
+        </small>
+        {{ $users->links() }}
     </div>
 </div>
+
+@section('css')
+<style>
+    .gap-2 { gap: 0.5rem; }
+</style>
+@endsection
 @stop

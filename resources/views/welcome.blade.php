@@ -11,135 +11,7 @@
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            color: white;
-            background: url('{{ asset('img/background.jpg') }}') no-repeat center center fixed;
-            background-size: cover;
-            height: 100vh;
-            margin: 0;
-            position: relative;
-        }
-
-        /* Overlay Transparan */
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1;
-        }
-
-        .navbar {
-            background: transparent;
-            z-index: 2;
-        }
-
-        .navbar-nav .nav-link {
-            color: #FFD700;
-            font-weight: bold;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #FFA500;
-        }
-
-        .content {
-            position: relative;
-            z-index: 2;
-            padding-top: 8vh;
-            padding-left: 10%;
-            color: white;
-            text-align: left;
-        }
-
-        .content h1 {
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-        }
-
-        .content p {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            max-width: 600px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-        }
-
-        .btn-custom {
-            background-color: #FFD700;
-            color: black;
-            font-weight: bold;
-            border-radius: 50px;
-            padding: 10px 20px;
-            transition: background-color 0.3s;
-            z-index: 2;
-            width: 200px;
-        }
-
-        .btn-custom:hover {
-            background-color: #FFA500;
-            color: white;
-        }
-
-        /* Footer Styling */
-        .footer {
-            background-color: #333;
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-            font-weight: bold;
-            z-index: 2;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .footer p {
-            margin: 0;
-            font-size: 0.9rem;
-            color: #bbb;
-        }
-
-        .footer span {
-            color: #FFD700;
-        }
-
-       .bbws-citanduy {
-            font-weight: bold; /* Tebalkan teks */
-            font-size: 1rem; /* Sesuaikan ukuran font */
-            text-transform: uppercase; /* Ubah menjadi huruf kapital semua */
-            letter-spacing: 2px; /* Beri jarak antar huruf */
-            color: #FFD700; /* Warna emas */
-            position: relative; /* Untuk posisi border */
-            display: inline-block; /* Membuat border bisa sesuai teks */
-        }
-            
-            /* Menambahkan outline pada teks */
-        .bbws-citanduy:before {
-            content: attr(data-text); /* Menggunakan data-text untuk menambahkan border */
-            position: absolute; /* Posisi absolute agar tidak mempengaruhi layout */
-            top: 0;
-            left: 0;
-            color: transparent; /* Buat teks menjadi transparan */
-            font-weight: bold; /* Tetap tebal */
-            font-size: 1rem; /* Sama dengan ukuran asli */
-            letter-spacing: 2px; /* Jarak antar huruf */
-            background: linear-gradient(90deg, #FFA500, #FFD700); /* Gradien yang kontras */
-            -webkit-background-clip: text; /* Agar gradient hanya pada teks */
-            -webkit-text-fill-color: transparent; /* Teks transparan untuk efek border */
-            z-index: -1; /* Pastikan berada di belakang teks asli */
-        }
-        .text-pengaduan {
-            color: #FFD700; /* emas */
-            font-weight: bold;
-            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
-        }
-
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
 </head>
 
 <body>
@@ -155,10 +27,15 @@
                     BBWS Citanduy
                 </span>
             </a>
-            <div class="collapse navbar-collapse justify-content-end">
+            <button class="navbar-toggler border-warning" type="button" data-bs-toggle="collapse"
+                data-bs-target="#welcomeNavbar" aria-controls="welcomeNavbar" aria-expanded="false"
+                aria-label="Buka menu navigasi">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="welcomeNavbar">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                          <a class="nav-link" href="{{ route('faq') }}">
                             FAQ
                         </a>
                     </li>
