@@ -99,18 +99,22 @@
             transition: transform 0.3s ease;
         }
 
+        /* Jawaban: garis emas di kiri (pengganti "J:") */
         .faq-answer {
             max-height: 0;
             overflow: hidden;
-            padding: 0 20px;
+            margin: 0 20px;
+            padding: 0 0 0 14px;
+            border-left: 4px solid #F2A900;
             color: #555;
             line-height: 1.7;
-            transition: max-height 0.3s ease, padding 0.3s ease;
+            transition: max-height 0.3s ease, padding 0.3s ease, margin 0.3s ease;
         }
 
         .faq-item.active .faq-answer {
             max-height: 300px;
-            padding: 0 20px 20px;
+            margin-bottom: 20px;
+            padding: 4px 0 4px 14px;
         }
 
         .faq-item.active .icon {
@@ -173,7 +177,6 @@
         </button>
 
         <div class="faq-answer">
-            <strong>J:</strong>
             Tidak. Masyarakat umum dapat langsung mengisi dan mengirim formulir
             pengaduan tanpa harus login atau mendaftar akun.
         </div>
@@ -188,7 +191,6 @@
         </button>
 
         <div class="faq-answer">
-            <strong>J:</strong>
             Ya. Sesuai informasi keamanan data pada formulir, data identitas dan
             dokumen yang diunggah akan dijaga kerahasiaannya dan hanya digunakan
             untuk keperluan verifikasi serta tindak lanjut laporan.
@@ -204,7 +206,6 @@
         </button>
 
         <div class="faq-answer">
-            <strong>J:</strong>
             Lampiran data/dokumen pendukung mendukung format
             zip, rar, doc, docx, xls, xlsx, pdf, jpg, png, ppt, dan pptx,
             dengan ukuran total maksimal 50 MB.
@@ -220,7 +221,6 @@
         </button>
 
         <div class="faq-answer">
-            <strong>J:</strong>
             Karena Nomor Kartu Tanda Penduduk (KTP) di Indonesia memang terdiri
             dari 16 digit angka; pengisian yang tidak sesuai akan ditolak oleh sistem.
         </div>
@@ -235,7 +235,6 @@
         </button>
 
         <div class="faq-answer">
-            <strong>J:</strong>
             Menu Login digunakan oleh petugas/administrator BBWS Citanduy untuk
             masuk ke panel pengelolaan data pengaduan, bukan untuk masyarakat umum
             yang menyampaikan laporan.
@@ -258,7 +257,7 @@
 
             const currentItem = question.parentElement;
 
-// Buka/tutup FAQ yang diklik
+            // Buka/tutup FAQ yang diklik
             currentItem.classList.toggle('active');
         });
     });
