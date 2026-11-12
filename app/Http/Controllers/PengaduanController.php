@@ -52,7 +52,7 @@ public function __construct(WhatsAppService $whatsappService)
     public function store(Request $request)
     {
         if ($request->ajax()) {
-            // Validasi data
+// Validasi data
             $validatedData = $request->validate([
                 'judul' => 'required|string|max:255',
                 'uraian' => 'required|string',
@@ -84,7 +84,9 @@ public function __construct(WhatsAppService $whatsappService)
 
                 'identitas.foto_identitas' => 'required|file|mimes:jpeg,png,jpg,gif,pdf|max:2048',
                 'identitas.foto_ktp' => 'required|file|mimes:jpeg,png,jpg,gif,pdf|max:2048',
-         ]);
+            ], [
+                'lampiran.*.keterangan.required' => 'Keterangan lampiran tidak boleh kosong',
+            ]);
 
             // Tentukan nomor laporan berdasarkan tanggal hari ini
             $nomorLaporan = (Pengaduan::whereDate('created_at', today())
@@ -260,6 +262,8 @@ public function __construct(WhatsAppService $whatsappService)
         $request->validate([
             'file_lampiran' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx|max:2048', // Sesuaikan tipe dan ukuran file sesuai kebutuhan
             'keterangan' => 'required|string'
+        ], [
+            'keterangan.required' => 'Keterangan tidak boleh kosong',
         ]);
 
         // Simpan file di storage sementara
@@ -735,9 +739,9 @@ public function ditolak(Request $request, Pengaduan $pengaduan)
 
             return response()->json([
                 'success' => false,
-                'message' =>
-                    'Terjadi kesalahan: ' . $e->getMessage(),
+                'message' => 'Terjadi kesalahan saat memproses penolakan pengaduan.',
             ], 500);
+
         }
     }
 }
