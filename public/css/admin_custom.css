@@ -1,0 +1,67 @@
+/* =====================================================
+   BBWS CITANDUY - GLOBAL ADMIN STYLE
+===================================================== */
+
+:root {
+    --bbws-navy: #0B2A55;
+    --bbws-gold: #F2A900;
+}
+
+/* ---------- SIDEBAR ---------- */
+
+html body .wrapper .main-sidebar,
+html body .wrapper .main-sidebar::before,
+html body .wrapper .main-sidebar .sidebar {
+    background: var(--bbws-navy) !important;
+    background-color: var(--bbws-navy) !important;
+}
+
+html body .main-sidebar .brand-link {
+    background: var(--bbws-navy) !important;
+    background-color: var(--bbws-navy) !important;
+    color: #FFFFFF !important;
+    border-bottom: 1px solid rgba(255, 255, 255, .15) !important;
+}
+
+html body .main-sidebar .brand-link .brand-text,
+html body .main-sidebar .brand-link .brand-image {
+    color: #FFFFFF !important;
+}
+
+html body .main-sidebar .nav-sidebar .nav-link {
+    color: #FFFFFF !important;
+    background-color: transparent !important;
+}
+
+html body .main-sidebar .nav-sidebar .nav-link i,
+html body .main-sidebar .nav-sidebar .nav-link p {
+    color: #FFFFFF !important;
+}
+
+html body .main-sidebar .nav-sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, .12) !important;
+    color: #FFFFFF !important;
+}
+
+html body .main-sidebar .nav-sidebar > .nav-item > .nav-link.active {
+    background-color: var(--bbws-gold) !important;
+    color: var(--bbws-navy) !important;
+}
+
+html body .main-sidebar .nav-sidebar > .nav-item > .nav-link.active i,
+html body .main-sidebar .nav-sidebar > .nav-item > .nav-link.active p {
+    color: var(--bbws-navy) !important;
+}
+
+html body .main-sidebar .nav-treeview .nav-link {
+    color: #FFFFFF !important;
+}
+
+html body .main-sidebar .nav-treeview .nav-link.active {
+    background-color: rgba(242, 169, 0, .25) !important;
+    color: #FFFFFF !important;
+}
+
+html body .main-sidebar .sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, .3);
+}

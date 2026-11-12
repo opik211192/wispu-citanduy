@@ -177,3 +177,61 @@ body {
             font-weight: bold;
             text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
         }
+
+
+        /* ==========================================
+        SIDEBAR DASHBOARD - WARNA BIRU
+        ========================================== */
+
+        /* Background sidebar */
+        .main-sidebar {
+            background: #007bff !important;
+        }
+
+        /* Bagian logo */
+        .main-sidebar .brand-link {
+            background: #0069d9 !important;
+            color: #ffffff !important;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        /* Teks menu sidebar */
+        .main-sidebar .nav-sidebar .nav-link {
+            color: #ffffff !important;
+        }
+
+        /* Ikon sidebar */
+        .main-sidebar .nav-sidebar .nav-link i {
+            color: #ffffff !important;
+        }
+
+        /* Hover menu */
+        .main-sidebar .nav-sidebar .nav-link:hover {
+            background: #0069d9 !important;
+            color: #ffffff !important;
+        }
+
+        /* Menu aktif */
+        .main-sidebar .nav-sidebar .nav-link.active {
+            background: #0056b3 !important;
+            color: #ffffff !important;
+            box-shadow: none !important;
+        }
+
+        /* Header Setting */
+        .main-sidebar .nav-header {
+            color: #dceaff !important;
+        }
+
+        .text-pengaduan {
+            color: #FFD700;
+            font-weight: bold;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+        }
+
+        /* TAMBAHKAN CSS SIDEBAR DI SINI */
+        .main-sidebar {
+            background: #007bff !important;
+        }
+
+        /* Dan seterusnya CSS sidebar */

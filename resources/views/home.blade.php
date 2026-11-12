@@ -865,27 +865,78 @@
 
 /* SIDEBAR */
 
-.main-sidebar {
+/* =====================================================
+   SIDEBAR - FORCE BBWS CITANDUY NAVY BLUE
+===================================================== */
 
-    background-color: var(--bbws-navy) !important;
-
+/* Background utama sidebar */
+html body .wrapper .main-sidebar,
+html body .wrapper .main-sidebar::before,
+html body .wrapper .main-sidebar .sidebar {
+    background: #0B2A55 !important;
+    background-color: #0B2A55 !important;
 }
 
-
-.main-sidebar .brand-link {
-
-    background-color: var(--bbws-navy) !important;
-
+/* Header logo */
+html body .main-sidebar .brand-link {
+    background: #0B2A55 !important;
+    background-color: #0B2A55 !important;
+    color: #FFFFFF !important;
+    border-bottom: 1px solid rgba(255,255,255,.15) !important;
 }
 
-
-.main-sidebar .nav-sidebar > .nav-item > .nav-link.active {
-
-    background-color: rgba(242, 169, 0, 0.25) !important;
-
-    color: #fff !important;
-
+/* Logo dan teks brand */
+html body .main-sidebar .brand-link .brand-text,
+html body .main-sidebar .brand-link .brand-image {
+    color: #FFFFFF !important;
 }
+
+/* Semua menu sidebar */
+html body .main-sidebar .nav-sidebar .nav-link {
+    color: #FFFFFF !important;
+    background-color: transparent !important;
+}
+
+/* Ikon menu */
+html body .main-sidebar .nav-sidebar .nav-link i,
+html body .main-sidebar .nav-sidebar .nav-link p {
+    color: #FFFFFF !important;
+}
+
+/* Hover menu */
+html body .main-sidebar .nav-sidebar .nav-link:hover {
+    background-color: rgba(255,255,255,.12) !important;
+    color: #FFFFFF !important;
+}
+
+/* Menu aktif utama */
+html body .main-sidebar .nav-sidebar > .nav-item > .nav-link.active {
+    background-color: #F2A900 !important;
+    color: #0B2A55 !important;
+}
+
+/* Ikon dan teks menu aktif */
+html body .main-sidebar .nav-sidebar > .nav-item > .nav-link.active i,
+html body .main-sidebar .nav-sidebar > .nav-item > .nav-link.active p {
+    color: #0B2A55 !important;
+}
+
+/* Submenu */
+html body .main-sidebar .nav-treeview .nav-link {
+    color: #FFFFFF !important;
+}
+
+/* Submenu aktif */
+html body .main-sidebar .nav-treeview .nav-link.active {
+    background-color: rgba(242,169,0,.25) !important;
+    color: #FFFFFF !important;
+}
+
+/* Sidebar scrollbar */
+html body .main-sidebar .sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba(255,255,255,.3);
+}
+
 
 
 /* RESPONSIVE */
